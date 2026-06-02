@@ -90,3 +90,27 @@ print("Cependant, la solution entière (3, 1) est également réalisable et donn
 print("L'arrondi de la solution continue ne donne donc pas toujours la solution entière optimale,")
 print("et peut même parfois donner une solution non réalisable (si les contraintes sont plus strictes).")
 print("C'est pourquoi l'arrondi n'est pas une méthode fiable pour résoudre une PLNE.")
+
+
+
+# ======================================
+# Exercice 2
+
+#resolution relaxation continue du problème
+
+print("\n--- Exercice 2 ---")
+model_v2 = LpProblem(name="exemple-plne", sense=LpMaximize)
+
+
+x_2 = LpVariable(name="x_2", lowBound=0, cat=LpContinuous)
+y_2 = LpVariable(name="y_2", lowBound=0, cat=LpContinuous)
+
+model_v2 += 5 * x_2 + 4 * y_2, "Fonction_objectif"
+model_v2 += 3 * x_2 + 2 * y_2 <= 12, "Contrainte_1"
+model_v2 += x_2 + 2 * y_2 <= 6, "Contrainte_2"
+
+model_v2.solve()
+
+print(f"Statut : {LpStatus[model_v2.status]}")
+print(f"x_2 = {x_2.value()}, y_2 = {y_2.value()}")
+print(f"Valeur optimale de Z = {model_v2.objective.value()}")
