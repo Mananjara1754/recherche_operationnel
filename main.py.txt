@@ -1,0 +1,95 @@
+# Exo1
+import numpy as np
+from scipy.optimize import minimize
+
+# Minimiser f(x,y) = (x−1)2 +(y −2)2 +xy
+# Fonction à minimiser
+def f_1(x):
+    return (x[0] - 1)**2 + (x[1] - 2)**2 + x[0]*x[1]
+# Point initial
+x0_1 = np.array([0,0])
+# Appel de minimize
+result_1 = minimize(f_1, x0_1, method='BFGS')     
+# Affichage des résultats
+print("Exercice 1")
+print("Solution␣optimale␣:", result_1.x)
+print("Valeur␣de␣la␣fonction␣en␣minimum␣:", result_1.fun)
+
+#exercice 2
+#Minimiser C(x,y) = x2 +y2 − 3x − 4y +xy
+
+def f_2(x):
+    return x[0]**2 + x[1]**2 - 3*x[0] - 4*x[1] + x[0]*x[1]
+x0_2 = np.array([0,0])
+result_2 = minimize(f_2, x0_2, method='BFGS')
+print("Exercice 2")
+print("Solution␣optimale␣:", result_2.x)
+print("Valeur␣de␣la␣fonction␣en␣minimum␣:", result_2.fun)
+
+
+
+
+#OPTIMISATION AVEC CONTRAINTES
+#exercice 3
+#Minimiser f(x,y) = (x−2)2 +(y +1)2
+#Contrainte␣: x +2y = 3 => x +2y − 3 = 0
+
+def f_3(x):
+    return (x[0] - 2)**2 + (x[1] + 1)**2
+
+constraint_3 = {'type': 'eq', 'fun': lambda x: x[0] + 2*x[1] - 3}
+x0_3 = np.array([0,0])
+result_3 = minimize(f_3, x0_3, method='SLSQP', constraints=[constraint_3])
+print("Exercice 3")
+print("Solution␣optimale␣:", result_3.x)
+print("Valeur␣de␣la␣fonction␣en␣minimum␣:", result_3.fun)
+
+#exercice 4
+#Minimiser L(x,y) = 3x2 +2y2 +xy
+#Contrainte␣: x +y = 100 => x +y − 100 = 0
+
+def f_4(x):
+    return 3*x[0]**2 + 2*x[1]**2 + x[0]*x[1]
+constraint_4 = {'type': 'eq', 'fun': lambda x: x[0] + x[1] - 100}
+x0_4 = np.array([50,50])
+result_4 = minimize(f_4, x0_4, method='SLSQP', constraints=[constraint_4])
+print("Exercice 4")
+print("Solution␣optimale␣:", result_4.x)
+print("Valeur␣de␣la␣fonction␣en␣minimum␣:", result_4.fun)
+
+
+#PROGRAMMATION LINÉAIRE
+#exercice 5
+#Maximiser Z = 3x +2y => Minimiser −3x −2y
+#Contraintes␣:
+#x +y ≤ 4
+#x ≤ 2
+#y ≤ 3
+#x ≥ 0, y ≥ 0
+
+c_5 = [−3, −2]  
+A_ub_5 = [
+    [1, 1],
+    [1, 0],
+    [0, 1]
+]
+b_ub_5 = [4, 2, 3]
+bounds_5 = ((0, None), (0, None))
+
+result_5 =  lingProg(c_5, A_ub=A_ub_5, b_ub=b_ub_5, bounds=bounds_5, method='highs')
+print("Exercice 5")
+print("Solution␣optimale␣:", result_5.x)
+print("Valeur␣de␣la␣fonction␣en␣minimum␣:", -result_5.fun)
+
+
+#exercice 6
+#Maximiser Gain = 5x +4y => Minimiser −5x −4y
+#Contraintes␣:
+#3x +2y ≤ 18 (CPU)
+#1x +2y ≤ 12 (I/O)
+#x ≥ 0, y ≥ 0
+
+c_6 = [−5, −4]
+A_ub_6 = [
+    [3, 2],
+    [1, 2]
