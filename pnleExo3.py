@@ -29,3 +29,6 @@ if model.status == LpStatusOptimal:
     print("Z = ", model.objective.value())
 else:
     print("Aucune solution optimale trouvée")   
+
+
+print("Conclusion : 9 unités de A et 17 unités de B permettent d'obtenir un profit maximum de 570000 euros.")
